@@ -1,0 +1,7 @@
+[package]
+name = "class-typscrap"
+version = "0.1.0"
+entrypoint = "lib.typ"
+authors = ["monaqa"]
+license = "MIT"
+description = "Scrapbox のようなことを Typst で実現する。"
