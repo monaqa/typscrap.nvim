@@ -69,3 +69,76 @@
   body
 }
 
+#let _wrap_zerowidth_space(s) = {
+  if s.starts-with(regex("\\s")) {
+    s = "​" + s
+  }
+  if s.ends-with(regex("\\s")) {
+    s = s + "​"
+  }
+  s
+}
+
+#let default_highlight_rule(state, s) = {
+  if state.at("", default: false) {
+    return box(
+      text(_wrap_zerowidth_space(s), fill: white),
+      fill: black,
+      outset: (y: 2pt),
+    )
+  }
+  if state.at("=", default: false) {
+    return box(
+      text(_wrap_zerowidth_space(s)),
+      fill: black.lighten(70%),
+      outset: (y: 2pt),
+    )
+  }
+  return s
+}
+
+// ハイライト適用可能なコードブロック。
+#let with_hl(
+  state_chars: ("", "="),
+  hl_func: default_highlight_rule,
+  wrapper: normal_raw_block,
+  content,
+) = {
+  let special_pattern = regex("\[(.*?)\[|\](.*?)\]|\\n")
+
+  set par(first-line-indent: 0pt)
+  show raw: (raw_block) => {
+    let _text = raw_block.text
+    let d = _text.matches(special_pattern)
+
+    let idx = 0
+    let state = (:)
+    let _content = []
+    for item in d {
+      _content = _content + hl_func(state, _text.slice(idx, item.start))
+
+      // state 更新 or 特殊でない文字として扱う
+      if item.text == "\n" {
+        _content = _content + linebreak()
+      } else {
+        let (s, e) = item.captures
+        if not (s in state_chars or e in state_chars) {
+          _content = _content + item.text
+        } else {
+          if e == none {
+            state.insert(s, true)
+          } else {
+            state.insert(e, false)
+          }
+        }
+      }
+
+      idx = item.end
+    }
+    _content = _content + hl_func(state, _text.slice(idx))
+
+    wrapper(_content)
+  }
+
+  content
+}

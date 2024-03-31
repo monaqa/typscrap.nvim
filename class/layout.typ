@@ -9,7 +9,7 @@
   body
 ) = {
   // text & paragraph
-  set text(font: "IBM Plex Sans JP")
+  set text(font: "IBM Plex Sans JP", size: 10.5pt)
   set par(justify: true, leading: 0.85em)
 
   // inline elements
@@ -53,9 +53,9 @@
     y_pad: 3pt,
     inset_bottom: 5pt,
     strk: 1.5pt + black,
-    size: 14pt,
+    size: 12pt,
   )
-  show heading.where(level: 4): heading_box.with(y_pad: 3pt, size: 14pt)
+  show heading.where(level: 4): heading_box.with(y_pad: 3pt, size: 12pt)
   show heading.where(level: 5): heading_box.with(inset_bottom: 4pt, strk: 0.6pt + black, weight: 300)
   show heading.where(level: 6): heading_box.with(weight: 200)
 
@@ -72,6 +72,14 @@
     "IBM Plex Mono",
     "Noto Sans Mono CJK JP",
   ))
+  // たぶんデフォルトで 0.8em みたいな何かがかかってるので、1.2 倍して 0.96em っぽくしとく
+  show raw.where(block: false): set text(size: 1.2em)
+  show raw.where(block: false): it => box(
+    outset: (x: 0.8pt, y: 3pt),
+    radius: 1.5pt,
+    fill: luma(90%),
+    it
+  )
   show raw.where(block: true): set par(leading: 0.6em)
   show raw.where(block: true): (it) => {
     if it.lang == "sh" {
