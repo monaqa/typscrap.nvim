@@ -27,13 +27,18 @@
     weight: 600,
     size: 1em,
   ) = {
-    pad(y: y_pad, block(
-      breakable: false,
-      width: if full { 100% } else { auto },
-      inset: (bottom: inset_bottom),
-      stroke: (bottom: strk),
-      text(weight: weight, size: size, it),
-    ))
+    pad(y: y_pad, {
+      block(
+        breakable: false,
+        inset: (bottom: inset_bottom),
+        stroke: (bottom: if full {none} else {strk}),
+        text(weight: weight, size: size, it),
+      )
+      if full and strk != none {
+        place(bottom, line(width: 100%, stroke: strk))
+      }
+    }
+    )
   }
 
   show heading.where(level: 1): (it) => {

@@ -65,19 +65,51 @@ function M.open_content(slug)
     end
 end
 
+---@param arglead string
+---@param slug string
+---@return integer
+local function calc_match_score(arglead, slug)
+    if arglead == slug then
+        return 5
+    end
+    if vim.startswith(slug, arglead) then
+        return 4
+    end
+    if slug:find(arglead, 1, true) then
+        return 3
+    end
+    local query = table.concat(vim.split(arglead, ""), ".*")
+    if slug:find("^" .. query) ~= nil then
+        return 2
+    end
+    if slug:find(query) ~= nil then
+        return 1
+    end
+    return 0
+end
+
 function M.open_content_complete(arglead, cmdline, cursorpos)
     local paths = vim.split(vim.fn.globpath(config.root_dir, "*/**/index.typ"), "\n", { plain = true })
-    local query = "^" .. table.concat(vim.split(arglead, ""), ".*")
 
-    local cands = vim.tbl_map(function(path)
-        return path:sub(#config.root_dir + 2, #path - 10)
-    end, paths)
-    cands = vim.tbl_filter(function(cand)
-        return cand:find(query)
-    end, cands)
-    cands = vim.fn.reverse(cands)
+    local cands = vim.iter(paths)
+        :map(function(path)
+            local slug = path:sub(#config.root_dir + 2, #path - 10)
+            return { slug = slug, score = calc_match_score(arglead, slug) }
+        end)
+        :filter(function(cand)
+            return cand.score > 0
+        end)
+        :totable()
 
-    return cands
+    table.sort(cands, function(a, b)
+        return a.score > b.score
+    end)
+
+    return vim.iter(cands)
+        :map(function(cand)
+            return cand.slug
+        end)
+        :totable()
 end
 
 return M
