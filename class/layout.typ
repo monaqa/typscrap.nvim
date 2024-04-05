@@ -35,7 +35,7 @@
         text(weight: weight, size: size, it),
       )
       if full and strk != none {
-        place(bottom, line(width: 100%, stroke: strk))
+        place(bottom, line(length: 100%, stroke: strk))
       }
     }
     )
