@@ -6,6 +6,7 @@
   show_toc: false,
   link_converters: href.default_link_converters,
   show_telomere: true,
+  confidential: none,
   body
 ) = {
   // text & paragraph
@@ -100,6 +101,18 @@
       // text(8pt, title)
       if show_telomere {
         telomere.telomere(loc)
+      }
+
+      if confidential != none {
+        let confidential_mark = {
+          let color = red.darken(20%)
+          box(
+            stroke: color + 2pt,
+            inset: (x: 3pt, y: 4pt),
+            align(center, text(fill: color, size: 9pt)[*#confidential*])
+          )
+        }
+        align(right, confidential_mark)
       }
     }),
     footer: locate((loc) => {

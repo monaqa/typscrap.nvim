@@ -2,21 +2,30 @@
 #import "component/href.typ"
 
 #let todos(body) = {
-  let checkbox(done: false) = {
+  let checkbox(done: false) = context {
+    let clr = text.fill
     set align(center)
     box(
-      stroke: 0.5pt + if done {gray} else {black},
+      stroke: 0.5pt + if done { gray } else { clr },
       width: 0.7em,
       height: 0.7em,
       if done {
         text(baseline: -0.1em, sym.checkmark)
-      } else {none}
+      } else { none },
     )
   }
 
+  show list.item: (it) => {
+    let children = it.body.fields().at("children", default: ())
+    let first = children.at(0, default: none)
+    if first == [~] {
+      children.remove(0)
+      return list(marker: checkbox(done: true), text(fill: luma(50%), children.join()))
+    }
+    it
+  }
+
   set list(marker: checkbox(), indent: 1em)
-  set enum(numbering: (num) => checkbox(done: true), indent: 1em)
-  show enum: set text(fill: gray)
 
   body
 }
