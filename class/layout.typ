@@ -28,12 +28,21 @@
     weight: 600,
     size: 1em,
   ) = {
+    let font_name = if weight == 500 {
+      "IBM Plex Sans JP Medm"
+    } else if weight == 600 {
+      "IBM Plex Sans JP Smbld"
+    } else if weight == 450 {
+      "IBM Plex Sans JP Text"
+    } else {
+      "IBM Plex Sans JP"
+    }
     pad(y: y_pad, {
       block(
         breakable: false,
         inset: (bottom: inset_bottom),
         stroke: (bottom: if full {none} else {strk}),
-        text(weight: weight, size: size, it),
+        text(weight: weight, size: size, font: font_name, it),
       )
       if full and strk != none {
         place(bottom, line(length: 100%, stroke: strk))
@@ -59,11 +68,11 @@
     y_pad: 3pt,
     inset_bottom: 5pt,
     strk: 1.5pt + black,
-    size: 12pt,
+    size: 14pt,
   )
-  show heading.where(level: 4): heading_box.with(y_pad: 3pt, size: 12pt)
-  show heading.where(level: 5): heading_box.with(inset_bottom: 4pt, strk: 0.6pt + black, weight: 300)
-  show heading.where(level: 6): heading_box.with(weight: 200)
+  show heading.where(level: 4): heading_box.with(y_pad: 2pt, inset_bottom: 3pt, size: 12pt, strk: (thickness: 1.2pt, dash: (2pt, 1pt)), weight: 500)
+  show heading.where(level: 5): heading_box.with(inset_bottom: 4pt, weight: 700)
+  show heading.where(level: 6): heading_box.with(inset_bottom: 3pt, strk: 0.5pt, weight: 200)
 
   // list & enum & term
   set list(
@@ -127,8 +136,9 @@
   )
 
   set quote(block: true)
-  show quote.where(block: true): set block(stroke: (left: 2pt + gray), inset: 0pt, outset: 5pt)
-  show quote.where(block: true): set pad(x: 10pt)
+  show quote.where(block: true): set pad(x: 0pt, y: 0pt)
+  show quote.where(block: true): block.with(stroke: (left: 2pt + gray), inset: 0pt, outset: 8pt)
+  show quote.where(block: true): pad.with(x: 10pt)
 
   if show_toc {
     outline(indent: 1em)

@@ -42,4 +42,29 @@
   #metadata((slugs: slugs.pos())) <meta-alias>
 ]
 
-#let meta(slug: none) = metadata((slug: slug))
+#let meta(slug: none) = {
+  metadata((slug: slug))
+}
+
+#let scrap(slug, root: "") = {
+  let body = box(
+    fill: blue.lighten(90%),
+    inset: (x: 4pt, bottom: 1pt),
+    outset: (top: 4pt, bottom: 3pt),
+    radius: 2pt,
+    text(
+      fill: blue.darken(50%),
+      size: 0.75em,
+      weight: 600,
+      font: "CommitMono-height105",
+      slug,
+    ),
+  )
+
+  let root = sys.inputs.at("typscrap_root", default: none)
+  if root != none {
+    link("file://" + root + slug + "/preview.pdf", body)
+  } else {
+    body
+  }
+}

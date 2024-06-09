@@ -1,5 +1,7 @@
 local M = {}
 
+local augroup = vim.api.nvim_create_augroup("typscrap", { clear = true })
+
 local config = require("typscrap.config")
 
 ---@param value number | string | boolean | nil
@@ -11,6 +13,16 @@ local function to_bool(value)
     return true
 end
 
+local function find_typscrap_file()
+    local file = vim.fn.expand("<cfile>")
+    local path = vim.fn.findfile(file .. "/index.typ", config.root_dir)
+    if #path == 0 then
+        vim.cmd.normal { [[gf]], bang = true }
+    else
+        vim.cmd.edit(path)
+    end
+end
+
 function M.setup(t)
     config.set(t)
 
@@ -19,6 +31,18 @@ function M.setup(t)
     end, {
         nargs = "?",
         complete = M.open_content_complete,
+    })
+
+    vim.api.nvim_create_autocmd({ "BufNewFile", "BufRead" }, {
+        group = augroup,
+        pattern = config.root_dir .. "/*.typ",
+        callback = function()
+            vim.keymap.set("n", "gf", find_typscrap_file, { buffer = true })
+            -- vim.opt_local.path:prepend(config.root_dir)
+            -- vim.opt_local.suffixesadd = { ".typ", "/index.typ" }
+            -- vim.opt_local.suffixesadd = { "/index.typ" }
+            vim.opt_local.omnifunc = "v:lua.typscrap.omni_complete"
+        end,
     })
 end
 
@@ -111,5 +135,23 @@ function M.open_content_complete(arglead, cmdline, cursorpos)
         end)
         :totable()
 end
+
+_G.typscrap = {
+    omni_complete = function(findstart, base)
+        vim.print { findstart, base }
+        if findstart == 1 then
+            -- first invocation
+            local line = vim.fn.getline(".")
+            local start = vim.fn.col(".") - 1
+            while start > 0 and line:sub(start, start) ~= [["]] do
+                start = start - 1
+            end
+            vim.print { line = line, col = vim.fn.col("."), start = start }
+            return start
+        else
+            return M.open_content_complete(base)
+        end
+    end,
+}
 
 return M
