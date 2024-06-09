@@ -72,7 +72,7 @@
   )
   show heading.where(level: 4): heading_box.with(y_pad: 2pt, inset_bottom: 3pt, size: 12pt, strk: (thickness: 1.2pt, dash: (2pt, 1pt)), weight: 500)
   show heading.where(level: 5): heading_box.with(inset_bottom: 4pt, weight: 700)
-  show heading.where(level: 6): heading_box.with(inset_bottom: 3pt, strk: 0.5pt, weight: 200)
+  show heading.where(level: 6): heading_box.with(inset_bottom: 3pt, strk: 0.5pt, weight: 300)
 
   // list & enum & term
   set list(
@@ -84,8 +84,8 @@
   show raw: set text(font: (
     "CommitMono-height105",
     "Hack Nerd Font",
-    "IBM Plex Mono",
     "Noto Sans Mono CJK JP",
+    "IBM Plex Sans JP",
   ))
   // たぶんデフォルトで 0.8em みたいな何かがかかってるので、1.2 倍して 0.96em っぽくしとく
   show raw.where(block: false): set text(size: 1.2em)
@@ -95,7 +95,7 @@
     fill: luma(90%),
     it
   )
-  show raw.where(block: true): set par(leading: 0.6em)
+  show raw.where(block: true): set par(leading: 0.6em, justify: false)
   show raw.where(block: true): (it) => {
     if it.lang == "sh" {
       code.console_block(it)
@@ -136,9 +136,13 @@
   )
 
   set quote(block: true)
-  show quote.where(block: true): set pad(x: 0pt, y: 0pt)
-  show quote.where(block: true): block.with(stroke: (left: 2pt + gray), inset: 0pt, outset: 8pt)
-  show quote.where(block: true): pad.with(x: 10pt)
+  show quote.where(block: true): set block(spacing: 1.2em)
+  show quote.where(block: true): block.with(
+    stroke: (left: 2pt + gray),
+    outset: (left: -4pt, y: 5pt),
+    above: 1.2em,
+    below: 1.5em,
+  )
 
   if show_toc {
     outline(indent: 1em)
