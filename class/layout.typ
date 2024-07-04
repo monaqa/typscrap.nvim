@@ -1,4 +1,5 @@
-#import "component.typ": href, code
+#import "component.typ": href, code, scrap
+#import "states.typ"
 
 #import "layout/telomere.typ"
 
@@ -74,6 +75,12 @@
   show heading.where(level: 5): heading_box.with(inset_bottom: 4pt, weight: 700)
   show heading.where(level: 6): heading_box.with(inset_bottom: 3pt, strk: 0.5pt, weight: 300)
 
+  set outline(depth: 3, indent: 1em, title: [目次])
+  show outline: it => {
+    show heading.where(level: 1): _ => heading_box(y_pad: 5pt)[目次]
+    it
+  }
+
   // list & enum & term
   set list(
     indent: 0.8em,
@@ -106,11 +113,9 @@
 
   // page
   set page(
-    header: locate(loc => {
-      // text(8pt, title)
-      if show_telomere {
-        telomere.telomere(loc)
-      }
+    header: context {
+      let slug = states.slug.final()
+      place(left + bottom, scrap(slug, href: false))
 
       if confidential != none {
         let confidential_mark = {
@@ -121,9 +126,9 @@
             align(center, text(fill: color, size: 9pt)[*#confidential*])
           )
         }
-        align(right, confidential_mark)
+        place(right + bottom, confidential_mark)
       }
-    }),
+    },
     footer: locate((loc) => {
       let align_dir = left
       if calc.odd(counter(page).at(loc).at(0)) {

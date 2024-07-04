@@ -1,0 +1,1 @@
+#let slug = state("slug")

@@ -1,5 +1,6 @@
 #import "component/code.typ"
 #import "component/href.typ"
+#import "states.typ"
 
 #let todos(body) = {
   let checkbox(done: false) = context {
@@ -43,10 +44,12 @@
 ]
 
 #let meta(slug: none) = {
-  metadata((slug: slug))
+  let _c = states.slug.update(slug)
+  _c + metadata((slug: slug))
 }
 
-#let scrap(slug, root: "") = {
+// 他の scrap へのリンクを作成する。
+#let scrap(slug, href: true) = {
   let body = box(
     fill: blue.lighten(90%),
     inset: (x: 4pt, bottom: 1pt),
@@ -62,7 +65,7 @@
   )
 
   let root = sys.inputs.at("typscrap_root", default: none)
-  if root != none {
+  if href and root != none {
     link("file://" + root + slug + "/preview.pdf", body)
   } else {
     body
