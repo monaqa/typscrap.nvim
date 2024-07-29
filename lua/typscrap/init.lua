@@ -112,6 +112,14 @@ local function calc_match_score(arglead, slug)
     return 0
 end
 
+function M.get_buf_slug()
+    local bufname = vim.fn.bufname()
+
+    if vim.startswith(bufname, config.root_dir) then
+        return bufname:sub(#config.root_dir + 2, #bufname - 10)
+    end
+end
+
 function M.open_content_complete(arglead, cmdline, cursorpos)
     local paths = vim.split(vim.fn.globpath(config.root_dir, "*/**/index.typ"), "\n", { plain = true })
 
