@@ -69,7 +69,7 @@ local template = {
 
 function M.open_content(slug)
     if slug == "" then
-        local s, e, user, repo = vim.fn.getcwd():find(vim.env.HOME .. "/ghq/.*/(.*)/(.*)")
+        local s, e, user, repo = vim.fn.getcwd():find(vim.env.HOME .. "/ghq/[^/]+/([^/]+)/([^/]+)")
         if repo == nil then
             slug = "."
         else
