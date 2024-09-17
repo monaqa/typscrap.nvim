@@ -16,7 +16,7 @@ local displayer = entry_display.create {
 
 function M.contents(opts)
     local fn = function()
-        return require("typscrap").open_content_complete("", "", 1)
+        return require("typscrap").list_contents(opts.hidden)
     end
 
     local entry_maker = function(entry)

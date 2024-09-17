@@ -1,6 +1,7 @@
 #import "component/code.typ"
 #import "component/href.typ"
 #import "states.typ"
+#import "colors.typ"
 
 #let todos(body) = {
   let checkbox(done: false) = context {
@@ -71,3 +72,5 @@
     body
   }
 }
+
+#let hide(body) = [\*\*\*\*]

@@ -1,4 +1,4 @@
-#import "component.typ": href, code, scrap
+#import "component.typ": href, code, scrap, colors
 #import "states.typ"
 
 #import "layout/telomere.typ"
@@ -15,7 +15,7 @@
   set par(justify: true, leading: 0.85em)
 
   // inline elements
-  show emph: href.emph_link
+  show emph: set text(font: ("Noto Serif", "IBM Plex Sans JP Medm"), fill: colors.fg.r1)
 
   show link: href.pretty_link.with(link_converters: link_converters)
 

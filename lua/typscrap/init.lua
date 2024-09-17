@@ -120,12 +120,33 @@ function M.get_buf_slug()
     end
 end
 
-function M.open_content_complete(arglead, cmdline, cursorpos)
+---@param show_hidden boolean
+---@return string[]
+function M.list_contents(show_hidden)
     local paths = vim.split(vim.fn.globpath(config.root_dir, "*/**/index.typ"), "\n", { plain = true })
-
     local cands = vim.iter(paths)
         :map(function(path)
-            local slug = path:sub(#config.root_dir + 2, #path - 10)
+            return path:sub(#config.root_dir + 2, #path - 10)
+        end)
+        :filter(function(slug)
+            local parts = vim.split(slug, "/", { plain = true, trimempty = true })
+            if show_hidden then
+                return true
+            end
+            for _, part in ipairs(parts) do
+                if vim.startswith(part, "_") then
+                    return false
+                end
+            end
+            return true
+        end)
+        :totable()
+    return cands
+end
+
+function M.open_content_complete(arglead, cmdline, cursorpos)
+    local cands = vim.iter(M.list_contents(true))
+        :map(function(slug)
             return { slug = slug, score = calc_match_score(arglead, slug) }
         end)
         :filter(function(cand)
