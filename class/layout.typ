@@ -91,7 +91,6 @@
   show raw: set text(font: (
     "CommitMono-height105",
     "Hack Nerd Font",
-    "Noto Sans Mono CJK JP",
     "IBM Plex Sans JP",
   ))
   // たぶんデフォルトで 0.8em みたいな何かがかかってるので、1.2 倍して 0.96em っぽくしとく
@@ -129,15 +128,15 @@
         place(right + bottom, confidential_mark)
       }
     },
-    footer: locate((loc) => {
+    footer: context {
       let align_dir = left
-      if calc.odd(counter(page).at(loc).at(0)) {
+      if calc.odd(counter(page).get().at(0)) {
         align_dir = right
       }
       set align(align_dir)
       set text(8pt)
       counter(page).display("1")
-    }),
+    },
   )
 
   set quote(block: true)
