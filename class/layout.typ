@@ -8,14 +8,17 @@
   link_converters: href.default_link_converters,
   show_telomere: true,
   confidential: none,
-  body
+  body,
 ) = {
   // text & paragraph
   set text(font: "IBM Plex Sans JP", size: 10.5pt)
   set par(justify: true, leading: 0.85em)
 
   // inline elements
-  show emph: set text(font: ("Noto Serif", "IBM Plex Sans JP Medm"), fill: colors.fg.r1)
+  show emph: set text(
+    font: ("Noto Serif", "IBM Plex Sans JP Medm"),
+    fill: colors.fg.r1,
+  )
 
   show link: href.pretty_link.with(link_converters: link_converters)
 
@@ -38,21 +41,29 @@
     } else {
       "IBM Plex Sans JP"
     }
-    pad(y: y_pad, {
-      block(
-        breakable: false,
-        inset: (bottom: inset_bottom),
-        stroke: (bottom: if full {none} else {strk}),
-        text(weight: weight, size: size, font: font_name, it),
-      )
-      if full and strk != none {
-        place(bottom, line(length: 100%, stroke: strk))
-      }
-    }
+    pad(
+      y: y_pad,
+      {
+        block(
+          breakable: false,
+          inset: (bottom: inset_bottom),
+          stroke: (
+            bottom: if full {
+              none
+            } else {
+              strk
+            },
+          ),
+          text(weight: weight, size: size, font: font_name, it),
+        )
+        if full and strk != none {
+          place(bottom, line(length: 100%, stroke: strk))
+        }
+      },
     )
   }
 
-  show heading.where(level: 1): (it) => {
+  show heading.where(level: 1): it => {
     [#metadata((date: none)) <meta-tick>]
     pagebreak(weak: true)
     heading_box(it, full: true, y_pad: 16pt, weight: 200, size: 22pt)
@@ -71,9 +82,19 @@
     strk: 1.5pt + black,
     size: 14pt,
   )
-  show heading.where(level: 4): heading_box.with(y_pad: 2pt, inset_bottom: 3pt, size: 12pt, strk: (thickness: 1.2pt, dash: (2pt, 1pt)), weight: 500)
+  show heading.where(level: 4): heading_box.with(
+    y_pad: 2pt,
+    inset_bottom: 3pt,
+    size: 12pt,
+    strk: (thickness: 1.2pt, dash: (2pt, 1pt)),
+    weight: 500,
+  )
   show heading.where(level: 5): heading_box.with(inset_bottom: 4pt, weight: 700)
-  show heading.where(level: 6): heading_box.with(inset_bottom: 3pt, strk: 0.5pt, weight: 300)
+  show heading.where(level: 6): heading_box.with(
+    inset_bottom: 3pt,
+    strk: 0.5pt,
+    weight: 300,
+  )
 
   set outline(depth: 3, indent: 1em, title: [目次])
   show outline: it => {
@@ -99,10 +120,10 @@
     outset: (x: 0.8pt, y: 3pt),
     radius: 1.5pt,
     fill: luma(90%),
-    it
+    it,
   )
   show raw.where(block: true): set par(leading: 0.6em, justify: false)
-  show raw.where(block: true): (it) => {
+  show raw.where(block: true): it => {
     if it.lang == "sh" {
       code.console_block(it)
     } else {
@@ -122,7 +143,7 @@
           box(
             stroke: color + 2pt,
             inset: (x: 3pt, y: 4pt),
-            align(center, text(fill: color, size: 9pt)[*#confidential*])
+            align(center, text(fill: color, size: 9pt)[*#confidential*]),
           )
         }
         place(right + bottom, confidential_mark)
