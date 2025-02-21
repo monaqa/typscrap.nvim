@@ -133,9 +133,12 @@
 
   // page
   set page(
+    margin: (x: 1.5cm, y: 2.5cm),
     header: context {
       let slug = states.slug.final()
-      place(left + bottom, scrap(slug, href: false))
+      if slug != none {
+        place(left + bottom, scrap(slug, href: false))
+      }
 
       if confidential != none {
         let confidential_mark = {

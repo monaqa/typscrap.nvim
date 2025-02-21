@@ -3,45 +3,50 @@
 #import "states.typ"
 #import "colors.typ"
 
-#let todos(body) = {
-  let checkbox(done: false) = (
-    context {
-      let clr = text.fill
-      set align(center)
-      box(
-        stroke: 0.5pt + if done {
-          gray
-        } else {
-          clr
-        },
-        width: 0.7em,
-        height: 0.7em,
-        if done {
-          text(baseline: -0.1em, sym.checkmark)
-        } else {
-          none
-        },
-      )
-    }
-  )
+#import "@preview/showybox:2.0.4": showybox
 
-  show list.item: it => {
-    let children = it.body.fields().at("children", default: ())
-    let first = children.at(0, default: none)
-    if first == [~] {
-      children.remove(0)
-      return list(
-        marker: checkbox(done: true),
-        text(fill: luma(50%), children.join()),
-      )
+#let todos(body) = (
+  context {
+    let spacing = par.spacing
+    let checkbox(done: false) = (
+      context {
+        let clr = text.fill
+        set align(center)
+        box(
+          stroke: 0.5pt + if done {
+            gray
+          } else {
+            clr
+          },
+          width: 0.7em,
+          height: 0.7em,
+          if done {
+            text(baseline: -0.1em, sym.checkmark)
+          } else {
+            none
+          },
+        )
+      }
+    )
+
+    set list(marker: checkbox(), indent: 1em, spacing: spacing)
+
+    show list.item: it => {
+      let children = it.body.fields().at("children", default: ())
+      let first = children.at(0, default: none)
+      if first == [~] {
+        children.remove(0)
+        return list(
+          marker: checkbox(done: true),
+          text(fill: luma(50%), children.join()),
+        )
+      }
+      it
     }
-    it
+
+    body
   }
-
-  set list(marker: checkbox(), indent: 1em)
-
-  body
-}
+)
 
 #let tick(date) = {
   if type(date) == "string" {
@@ -85,3 +90,12 @@
 }
 
 #let hide(body) = [\*\*\*\*]
+
+#let statement = showybox.with(
+  frame: (
+    border-color: luma(25%),
+    title-color: luma(80%),
+    body-color: luma(95%),
+  ),
+  title-style: (color: luma(20%), weight: 600, align: center),
+)
