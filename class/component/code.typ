@@ -1,11 +1,13 @@
 //! target: ../.memo.local/memo.typ
+#import "../colors.typ"
 
 // code 記述における便利関数
 
 #let normal_raw_block(body) = {
   block(
     width: 100%,
-    fill: luma(95%),
+    fill: colors.bg.w0,
+    stroke: 0.5pt + colors.fg.w0,
     inset: (x: 4pt, top: 6pt, bottom: 6pt),
     radius: 2pt,
     body

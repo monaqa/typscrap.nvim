@@ -99,3 +99,23 @@
   ),
   title-style: (color: luma(20%), weight: 600, align: center),
 )
+
+// table まわりの関数たち。
+#let th(
+  textf: text.with(weight: 600, fill: colors.bg.w0),
+  ..args,
+) = {
+  arguments(
+    table.header(
+      ..args.pos().map(it => table.cell(
+        textf(it),
+        fill: colors.fg.w4,
+        inset: (y: 0.5em),
+        ..args.named(),
+      )),
+    ),
+  )
+  arguments(columns: args.pos().len())
+}
+
+#let tr(..args) = arguments(..args.pos())

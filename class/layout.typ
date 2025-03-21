@@ -131,6 +131,26 @@
     }
   }
 
+  // table
+  set table(
+    fill: (_, y) => {
+      if calc.even(y) {
+        colors.bg.w1
+      } else {
+        colors.bg.w0
+      }
+    },
+    stroke: none,
+    // Tips: https://github.com/typst/typst/discussions/3692
+    // stroke: (x, y) => (
+    //   left: if x == 0 {1pt} else {0pt},
+    //   top: if y == 0 {1pt} else {0pt},
+    //   right: 1pt,
+    //   bottom: 1pt,
+    // )
+  )
+  show table: block.with(clip: true, radius: 2pt, stroke: 1pt + colors.fg.w4)
+
   // page
   set page(
     margin: (x: 1.5cm, y: 2.5cm),
