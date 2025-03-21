@@ -101,6 +101,7 @@
 )
 
 // table まわりの関数たち。
+
 #let th(
   textf: text.with(weight: 600, fill: colors.bg.w0),
   ..args,
@@ -118,4 +119,28 @@
   arguments(columns: args.pos().len())
 }
 
-#let tr(..args) = arguments(..args.pos())
+#let tr(
+  headerf: text.with(weight: 600, fill: colors.fg.w4),
+  textf: it => it,
+  header-cell-args: (align: right),
+  col-header: (),
+  ..args
+) = {
+  if col-header == true {
+    col-header = (0,)
+  }
+  if col-header == false {
+    col-header = ()
+  }
+  arguments(..args.pos().enumerate().map(((idx, it)) => table.cell(
+    ..{
+      if idx in col-header {
+        arguments(..header-cell-args)
+        arguments(headerf(it))
+      } else {
+        arguments(..args.named())
+        arguments(textf(it))
+      }
+    }
+  )))
+}
