@@ -1,14 +1,16 @@
 //! target: ../.memo.local/memo.typ
 #import "../colors.typ"
+#import "block.typ": breakable-fancyblock
 
 // code 記述における便利関数
 
 #let normal_raw_block(body) = {
-  block(
-    width: 100%,
+  breakable-fancyblock(
     fill: colors.bg.w0,
-    stroke: 0.5pt + colors.fg.w0,
-    inset: (x: 4pt, top: 6pt, bottom: 6pt),
+    border-width: 0.5pt,
+    border-color: colors.fg.w0,
+    inset-x: 4pt,
+    inset-y: 6pt,
     radius: 2pt,
     body
   )
