@@ -11,6 +11,7 @@
     border-color: colors.fg.w0,
     inset-x: 4pt,
     inset-y: 6pt,
+    deco-height: 4pt,
     radius: 2pt,
     body
   )
@@ -19,10 +20,10 @@
 #let console_block(body) = {
   block(
     width: 100%,
-    stroke: (left:3pt + luma(30%), rest: 1pt + luma(30%)),
-    fill: luma(85%),
+    stroke: (left: 3pt + colors.fg.w0),
+    fill: colors.bg.w2,
     inset: (x: 4pt, top: 6pt, bottom: 6pt),
-    radius: 0pt,
+    radius: 2pt,
     body
   )
 }
