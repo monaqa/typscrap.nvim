@@ -1,5 +1,6 @@
 #import "component/code.typ"
 #import "component/href.typ"
+#import "component/chart.typ": draw-tree
 #import "states.typ"
 #import "colors.typ"
 
