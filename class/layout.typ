@@ -3,6 +3,8 @@
 
 #import "layout/telomere.typ"
 
+#let state_todo = state("todo")
+
 #let document(
   show_toc: false,
   link_converters: href.default_link_converters,
@@ -102,11 +104,78 @@
     it
   }
 
+  let checkbox(done: false) = (
+    context {
+      let clr = text.fill
+      set align(center)
+      box(
+        stroke: 0.5pt + if done {
+          gray
+        } else {
+          clr
+        },
+        width: 0.7em,
+        height: 0.7em,
+        if done {
+          text(baseline: -0.1em, sym.checkmark)
+        } else {
+          none
+        },
+      )
+    }
+  )
+
   // list & enum & term
   set list(
     indent: 0.8em,
-    marker: place(center, dy: 0.25em)[#circle(radius: 1.5pt, fill: black)],
+    // marker: place(center, dy: 0.25em)[#circle(radius: 1.5pt, fill: black)],
+    marker: depth => (
+      context {
+        let (status, due) = state_todo.get()
+        if status == none {
+          place(center, dy: 0.25em)[#circle(radius: 1.5pt, fill: black)]
+        }else if status == "done" {
+          checkbox(done: true)
+        } else {
+          checkbox(done: false)
+        }
+      }
+    )
   )
+
+  show list.item: it => {
+    let children = it.body.at("children", default: ())
+    let md = children.filter(c => c.func() == metadata).fold(
+      (status: none, due: none),
+      (acc, data) => {
+        let v = data.value
+        if "status" in v {
+          acc.status = v.status
+        }
+        if "due" in v {
+          acc.due = v.due
+        }
+        acc
+      },
+    )
+    state_todo.update(md)
+    v(0pt) // 複数の update がくっつくと意図しない挙動を引き起こすため、あえてつける
+    if md.due != none {
+      place(
+        right,
+        box(
+          fill: colors.fg.r0,
+          inset: 3pt,
+          radius: 2pt,
+          text(fill: colors.bg.w0, size: 0.8em, weight: 600, [Due: #md.due])
+        ),
+      )
+    }
+    it
+    state_todo.update(none)
+  }
+
+  show list: set block(width: 100%)
 
   // raw
   show raw: set text(font: (

@@ -6,6 +6,11 @@
 
 #import "@preview/showybox:2.0.4": showybox
 
+#let TODO = metadata((status: "todo"))
+#let DOING = metadata((status: "doing"))
+#let DONE = metadata((status: "done"))
+#let todo(due: none) = metadata((due: due))
+
 #let todos(body) = (
   context {
     let spacing = par.spacing
