@@ -69,11 +69,15 @@ local template = {
 
 function M.open_content(slug)
     if slug == "" then
-        local s, e, user, repo = vim.fn.getcwd():find(vim.env.HOME .. "/ghq/[^/]+/([^/]+)/([^/]+)")
-        if repo == nil then
-            slug = "."
+        if vim.g.typscrap_default_slug ~= nil then
+            slug = vim.g.typscrap_default_slug
         else
-            slug = ("in_project/%s/%s"):format(user, repo)
+            local s, e, user, repo = vim.fn.getcwd():find(vim.env.HOME .. "/ghq/[^/]+/([^/]+)/([^/]+)")
+            if repo == nil then
+                slug = "."
+            else
+                slug = ("in_project/%s/%s"):format(user, repo)
+            end
         end
     end
 
@@ -167,7 +171,6 @@ end
 
 _G.typscrap = {
     omni_complete = function(findstart, base)
-        vim.print { findstart, base }
         if findstart == 1 then
             -- first invocation
             local line = vim.fn.getline(".")
@@ -175,7 +178,6 @@ _G.typscrap = {
             while start > 0 and line:sub(start, start) ~= [["]] do
                 start = start - 1
             end
-            vim.print { line = line, col = vim.fn.col("."), start = start }
             return start
         else
             return M.open_content_complete(base)

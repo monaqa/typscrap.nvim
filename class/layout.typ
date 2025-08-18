@@ -9,7 +9,7 @@
   show_toc: false,
   link_converters: href.default_link_converters,
   show_telomere: true,
-  confidential: none,
+  confidential: [Internal User Only],
   body,
 ) = {
   // text & paragraph
@@ -131,9 +131,15 @@
     // marker: place(center, dy: 0.25em)[#circle(radius: 1.5pt, fill: black)],
     marker: depth => (
       context {
-        let (status, due) = state_todo.get()
+        let default = place(center, dy: 0.25em)[#circle(radius: 1.5pt, fill: black)]
+        let v = state_todo.get()
+        if v == none {
+          return default
+        }
+        let status = v.at("status")
+        let due = v.at("due")
         if status == none {
-          place(center, dy: 0.25em)[#circle(radius: 1.5pt, fill: black)]
+          default
         }else if status == "done" {
           checkbox(done: true)
         } else {
@@ -195,6 +201,8 @@
   show raw.where(block: true): it => {
     if it.lang == "sh" {
       code.console_block(it)
+    } else if it.lang == "ish" {
+      code.interactive_block(it)
     } else {
       code.normal_raw_block(it)
     }

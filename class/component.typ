@@ -125,6 +125,23 @@
   arguments(columns: args.pos().len())
 }
 
+#let tf(
+  textf: text.with(),
+  ..args,
+) = {
+  arguments(
+    table.footer(
+      ..args.pos().map(it => table.cell(
+        textf(it),
+        stroke: (top: 1pt),
+        inset: (y: 0.5em),
+        ..args.named(),
+      )),
+    ),
+  )
+  arguments(columns: args.pos().len())
+}
+
 #let tr(
   headerf: text.with(weight: 600, fill: colors.fg.w4),
   textf: it => it,
@@ -150,3 +167,4 @@
     }
   )))
 }
+

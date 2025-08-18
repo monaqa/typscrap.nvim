@@ -36,8 +36,46 @@
   ))
 }
 
+#let interactive_block(body) = {
+  let state = "cmd"
+  let cmds = ()
+  let results = ()
+  for line in body.text.split("\n") {
+    if state == "cmd" {
+      if line.starts-with("❯ ") {
+        cmds.push(line.slice(4))
+      } else {
+        state = "out"
+        results.push(line)
+      }
+    } else if state == "out" {
+      if line.starts-with("❯ ") {
+        termlog[
+          #raw(lang: "sh", block: true, cmds.join("\n"))
+        ][
+          #raw(block: true, results.join("\n"))
+        ]
+        cmds = ()
+        results = ()
+        cmds.push(line.slice(4))
+        state = "cmd"
+      } else {
+        results.push(line)
+      }
+    }
+  }
+
+  if cmds.len() > 0 or results.len() > 0 {
+    termlog[
+      #raw(lang: "sh", block: true, cmds.join("\n"))
+    ][
+      #raw(block: true, results.join("\n"))
+    ]
+  }
+}
+
 #let filecode(fname, href: none, body) = {
-  show raw.where(block: true): (it) => {
+  show raw.where(block: true): it => {
     grid(
       rows: 2,
       block(
@@ -112,7 +150,7 @@
   let special_pattern = regex("\[(.*?)\[|\](.*?)\]|\\n")
 
   set par(first-line-indent: 0pt)
-  show raw: (raw_block) => {
+  show raw: raw_block => {
     let _text = raw_block.text
     let d = _text.matches(special_pattern)
 
