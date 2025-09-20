@@ -2,6 +2,7 @@ local M = {}
 
 local augroup = vim.api.nvim_create_augroup("typscrap", { clear = true })
 
+local jj = require("typscrap.jj")
 local config = require("typscrap.config")
 
 ---@param value number | string | boolean | nil
@@ -44,6 +45,17 @@ function M.setup(t)
             vim.opt_local.omnifunc = "v:lua.typscrap.omni_complete"
         end,
     })
+
+    if config.jj_auto_new then
+        vim.api.nvim_create_autocmd({ "BufWritePre" }, {
+            group = augroup,
+            pattern = config.root_dir .. "/*.typ",
+            desc = [[保存前に特定の日付で jj new しておく]],
+            callback = function()
+                jj.new_with_date()
+            end,
+        })
+    end
 end
 
 local template = {
