@@ -4,7 +4,7 @@ local M = {}
 local config = require("typscrap.config")
 
 local function today_description()
-    return "periodical update (" .. vim.fn.strftime("%Y/%m/%d") .. ")"
+    return vim.fn.strftime("%Y/%m/%d") .. " update"
 end
 
 local function check_jj_executable()
