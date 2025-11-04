@@ -9,7 +9,7 @@
   show_toc: false,
   link_converters: href.default_link_converters,
   show_telomere: true,
-  confidential: [Internal User Only],
+  confidential: [Internal Use Only],
   body,
 ) = {
   // text & paragraph
@@ -28,7 +28,7 @@
   let heading_box(
     it,
     full: false,
-    y_pad: 0pt,
+    pad: (:),
     inset_bottom: 0pt,
     strk: none,
     weight: 600,
@@ -43,8 +43,8 @@
     } else {
       "IBM Plex Sans JP"
     }
-    pad(
-      y: y_pad,
+    std.pad(
+      ..pad,
       {
         block(
           breakable: false,
@@ -65,33 +65,45 @@
     )
   }
 
-  show heading.where(level: 1): it => {
-    [#metadata((date: none)) <meta-tick>]
-    pagebreak(weak: true)
-    heading_box(it, full: true, y_pad: 16pt, weight: 200, size: 22pt)
+  show title: it => {
+    heading_box(it, full: true, pad: (y: 10pt), weight: 200, size: 22pt)
   }
+
+  show heading.where(level: 1): heading_box.with(
+    full: true,
+    pad: (top: 2pt, bottom: 4pt),
+    inset_bottom: 5pt,
+    strk: 1.5pt + black,
+    weight: 600,
+    size: 18pt,
+  )
   show heading.where(level: 2): heading_box.with(
     full: true,
-    y_pad: 3pt,
+    pad: (y: 6pt),
     inset_bottom: 5pt,
     strk: 0.8pt + black,
     weight: 300,
     size: 18pt,
   )
   show heading.where(level: 3): heading_box.with(
-    y_pad: 3pt,
+    pad: (y: 3pt),
     inset_bottom: 5pt,
-    strk: 1.5pt + black,
+    // strk: 0.8pt + black,
+    weight: 600,
     size: 14pt,
   )
   show heading.where(level: 4): heading_box.with(
-    y_pad: 2pt,
+    pad: (y: 2pt),
     inset_bottom: 3pt,
     size: 12pt,
-    strk: (thickness: 1.2pt, dash: (2pt, 1pt)),
+    strk: (thickness: 1.4pt),
     weight: 500,
   )
-  show heading.where(level: 5): heading_box.with(inset_bottom: 4pt, weight: 700)
+  show heading.where(level: 5): heading_box.with(
+    inset_bottom: 4pt,
+    weight: 700,
+    strk: (thickness: 1.2pt, dash: (2pt, 1pt)),
+  )
   show heading.where(level: 6): heading_box.with(
     inset_bottom: 3pt,
     strk: 0.5pt,
@@ -100,7 +112,7 @@
 
   set outline(depth: 3, indent: 1em, title: [目次])
   show outline: it => {
-    show heading.where(level: 1): _ => heading_box(y_pad: 5pt)[目次]
+    show heading.where(level: 1): _ => heading_box(pad: (y: 5pt))[目次]
     it
   }
 
@@ -181,7 +193,7 @@
     state_todo.update(none)
   }
 
-  show list: set block(width: 100%)
+  // show list: set block(width: 100%)
 
   // raw
   show raw: set text(font: (
