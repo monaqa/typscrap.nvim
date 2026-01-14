@@ -281,6 +281,8 @@
     below: 1.5em,
   )
 
+  show math.equation.where(block: false): set math.frac(style: "horizontal")
+
   if show_toc {
     outline(indent: 1em)
     pagebreak()

@@ -1,4 +1,4 @@
-// block に関する便利関数。
+// block や box に関する便利関数。
 // cf.) https://github.com/typst/typst/issues/735#issuecomment-2023701180
 
 #let counter-family(id) = {
@@ -38,7 +38,7 @@
         block(
           width: 100%,
           height: deco-height,
-          fill: gradient.linear(transparent, fill, angle: 90deg),
+          fill: if fill == none {none} else {gradient.linear(transparent, fill, angle: 90deg)},
           stroke: (
             x: border-width + gradient.linear(
               transparent,
@@ -63,7 +63,7 @@
         block(
           width: 100%,
           height: deco-height,
-          fill: gradient.linear(transparent, fill, angle: 270deg),
+          fill: if fill == none {none} else {gradient.linear(transparent, fill, angle: 90deg)},
           stroke: (
             x: border-width + gradient.linear(
               transparent,
@@ -86,4 +86,71 @@
       grid.footer(border-below, repeat: true),
     )
   }
+}
+
+#let labeled-text(
+  label: none,
+  stroke: 1pt + black,
+  fill: none,
+  bottom-edge: -0.3em,
+  top-edge: 1.0em,
+  inset-x: 2pt,
+  radius: 2pt,
+  body,
+) = {
+  let stroke = if type(stroke) == color {
+    1pt + stroke
+  } else if type(stroke) == length {
+    stroke + black
+  } else {
+    stroke
+  }
+
+  let _left_tip = if label != none {
+    box(
+      stroke: (right: none, rest: stroke),
+      radius: (left: radius),
+      outset: (bottom: - bottom-edge, right: 0.1pt), // わずかに重ねる
+      inset: (x: inset-x),
+      fill: stroke.paint,
+      [#box(height: top-edge)#label]
+    )
+    // highlight の inset の代わり
+    box(
+      stroke: (y: stroke),
+      outset: (bottom: - bottom-edge),
+      fill: fill,
+      [#box(height: top-edge, width: inset-x)]
+    )
+  } else {
+    box(
+      stroke: (right: none, rest: stroke),
+      radius: (left: radius),
+      outset: (bottom: - bottom-edge, right: 0.1pt), // わずかに重ねる
+      inset: (left: inset-x),
+      fill: fill,
+      [#box(height: top-edge)]
+    )
+  }
+
+  let _body = highlight(
+    stroke: (y: stroke),
+    bottom-edge: bottom-edge,
+    top-edge: top-edge,
+    fill: fill,
+    body,
+  )
+
+  let _right = box(
+    stroke: (left: none, rest: stroke),
+    radius: (right: radius),
+    outset: (bottom: - bottom-edge, left: 0.1pt), // わずかに重ねる
+    height: top-edge,
+    width: inset-x,
+    fill: fill,
+  )
+
+  _left_tip
+  _body
+  _right
 }

@@ -1,6 +1,7 @@
 #import "component/code.typ"
 #import "component/href.typ"
 #import "component/chart.typ"
+#import "component/block.typ": breakable-fancyblock, labeled-text
 #import "states.typ"
 #import "colors.typ"
 
