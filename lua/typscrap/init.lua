@@ -18,7 +18,7 @@ local function find_typscrap_file()
     local file = vim.fn.expand("<cfile>")
     local path = vim.fn.findfile(file .. "/index.typ", config.root_dir)
     if #path == 0 then
-        vim.cmd.normal { [[gf]], bang = true }
+        vim.cmd.normal { [[gF]], bang = true }
     else
         vim.cmd.edit(path)
     end

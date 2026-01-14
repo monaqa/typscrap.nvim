@@ -12,9 +12,8 @@
         attrs: (src: "https://unpkg.com/mermaid/dist/mermaid.min.js"),
       )
       html.elem("script", "mermaid.initialize({startOnLoad: true});")
-      show raw.where(block: true, lang: "mermaid"): it => html.elem(
-        "div",
-        attrs: (class: "mermaid"),
+      show raw.where(block: true, lang: "mermaid"): it => html.pre(
+        class: "mermaid",
         it.text,
       )
 

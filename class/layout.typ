@@ -18,7 +18,7 @@
 
   // inline elements
   show emph: set text(
-    font: ("Noto Serif", "IBM Plex Sans JP Medm"),
+    font: "IBM Plex Sans JP Medm",
     fill: colors.fg.r1,
   )
 
@@ -229,7 +229,7 @@
         colors.bg.w0
       }
     },
-    stroke: none,
+    stroke: colors.bg.w2 + 0.5pt,
     // Tips: https://github.com/typst/typst/discussions/3692
     // stroke: (x, y) => (
     //   left: if x == 0 {1pt} else {0pt},

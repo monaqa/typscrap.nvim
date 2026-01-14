@@ -1,4 +1,3 @@
-//! target: ../.memo.local/memo.typ
 #import "../colors.typ"
 #import "block.typ": breakable-fancyblock
 
@@ -65,12 +64,16 @@
     }
   }
 
-  if cmds.len() > 0 or results.len() > 0 {
-    termlog[
-      #raw(lang: "sh", block: true, cmds.join("\n"))
-    ][
-      #raw(block: true, results.join("\n"))
-    ]
+  if cmds.len() > 0 {
+    if results.len == 0 {
+      raw(lang: "sh", block: true, cmds.join("\n"))
+    } else {
+      termlog[
+        #raw(lang: "sh", block: true, cmds.join("\n"))
+      ][
+        #raw(block: true, results.join("\n"))
+      ]
+    }
   }
 }
 
