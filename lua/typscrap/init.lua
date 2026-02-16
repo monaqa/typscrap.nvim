@@ -28,9 +28,9 @@ function M.setup(t)
     config.set(t)
 
     vim.api.nvim_create_user_command("Typscrap", function(meta)
-        M.open_content(meta.args)
+        M.open_content(meta.fargs)
     end, {
-        nargs = "?",
+        nargs = "*",
         complete = M.open_content_complete,
     })
 
@@ -59,13 +59,13 @@ function M.setup(t)
 end
 
 local template = {
-    index_file = function(slug)
+    index_file = function(slug, title)
         return {
             [[//! target: ./preview.typ]],
             [[#import "@local/class-typscrap:0.2.0": component; #import component: *]],
             ([[#meta(slug: "%s")]]):format(slug),
             [[]],
-            [=[#title[]]=],
+            ([=[#title[%s]]=]):format(title),
         }
     end,
     preview_file = function(slug)
@@ -79,7 +79,20 @@ local template = {
     end,
 }
 
-function M.open_content(slug)
+---@param fargs string[]
+function M.open_content(fargs)
+    local slug, title
+    if #fargs == 0 then
+        slug = ""
+        title = ""
+    elseif #fargs == 1 then
+        slug = fargs[1]
+        title = ""
+    else
+        slug = fargs[1]
+        title = table.concat(fargs, " ", 2)
+    end
+
     if slug == "" then
         if vim.g.typscrap_default_slug ~= nil then
             slug = vim.g.typscrap_default_slug
@@ -101,7 +114,7 @@ function M.open_content(slug)
     if not to_bool(vim.fn.filereadable(index_file)) then
         vim.fn.mkdir(dir, "p")
         vim.fn.writefile(template.preview_file(slug), preview_file)
-        vim.fn.setline(1, template.index_file(slug))
+        vim.fn.setline(1, template.index_file(slug, title))
     end
 end
 
