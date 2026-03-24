@@ -90,46 +90,57 @@
 
 #let labeled-text(
   label: none,
-  stroke: 1pt + black,
+  stroke: 0.5pt + black,
   fill: none,
-  bottom-edge: -0.3em,
-  top-edge: 1.0em,
+  bottom-edge: -20%,
+  top-edge: 100%,
   inset-x: 2pt,
   radius: 2pt,
   body,
-) = {
+) = context {
+  let size = text.size
+  let top-edge = if type(top-edge) == length { top-edge } else { size * top-edge }
+  let bottom-edge = if type(bottom-edge) == length { bottom-edge } else { size * bottom-edge }
+
   let stroke = if type(stroke) == color {
-    1pt + stroke
+    0.5pt + stroke
   } else if type(stroke) == length {
     stroke + black
   } else {
     stroke
   }
 
+  let label-size = measure(label)
+  let body-size = measure(body)
+
   let _left_tip = if label != none {
+    let (height, ) = measure(label)
     box(
       stroke: (right: none, rest: stroke),
       radius: (left: radius),
-      outset: (bottom: - bottom-edge, right: 0.1pt), // わずかに重ねる
+      outset: (bottom: - bottom-edge, top: top-edge - height, right: 0.1pt), // わずかに重ねる
       inset: (x: inset-x),
       fill: stroke.paint,
-      [#box(height: top-edge)#label]
+      baseline: 0pt,
+      label
     )
     // highlight の inset の代わり
     box(
       stroke: (y: stroke),
-      outset: (bottom: - bottom-edge),
+      outset: (bottom: - bottom-edge, top: top-edge),
       fill: fill,
-      [#box(height: top-edge, width: inset-x)]
+      baseline: 0pt,
+      [#box(height: 0pt, width: inset-x)]
     )
   } else {
     box(
       stroke: (right: none, rest: stroke),
       radius: (left: radius),
-      outset: (bottom: - bottom-edge, right: 0.1pt), // わずかに重ねる
+      outset: (bottom: - bottom-edge, top: top-edge, right: 0.1pt), // わずかに重ねる
       inset: (left: inset-x),
       fill: fill,
-      [#box(height: top-edge)]
+      baseline: 0pt,
+      []
     )
   }
 
@@ -144,10 +155,10 @@
   let _right = box(
     stroke: (left: none, rest: stroke),
     radius: (right: radius),
-    outset: (bottom: - bottom-edge, left: 0.1pt), // わずかに重ねる
-    height: top-edge,
+    outset: (bottom: - bottom-edge, top: top-edge, left: 0.1pt), // わずかに重ねる
     width: inset-x,
     fill: fill,
+    baseline: 0pt,
   )
 
   _left_tip

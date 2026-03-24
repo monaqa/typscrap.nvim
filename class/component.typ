@@ -143,3 +143,21 @@
   )
 }
 
+#let termtable(
+  header: none,
+  body
+) = {
+  let items = body.at("children", default: ()).filter(c => c.func() == terms.item).map(item => item.fields())
+
+  table(
+    ..{
+      if header != none {
+        th(..header)
+      }
+      arguments(columns: 2)
+      for (term, description) in items {
+        tr[#term][#description]
+      }
+    }
+  )
+}

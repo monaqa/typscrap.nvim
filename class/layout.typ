@@ -17,10 +17,7 @@
   set par(justify: true, leading: 0.85em)
 
   // inline elements
-  show emph: set text(
-    font: "IBM Plex Sans JP Medm",
-    fill: colors.fg.r1,
-  )
+  show emph: set text(font: "IBM Plex Sans JP Medm")
 
   show link: href.pretty_link.with(link_converters: link_converters)
 
@@ -185,7 +182,7 @@
           fill: colors.fg.r0,
           inset: 3pt,
           radius: 2pt,
-          text(fill: colors.bg.w0, size: 0.8em, weight: 600, [Due: #md.due])
+          text(fill: colors.bg.w0, size: 0.8em, weight: 600, [Due: #md.due]),
         ),
       )
     }
@@ -203,8 +200,8 @@
   ))
   // たぶんデフォルトで 0.8em みたいな何かがかかってるので、1.2 倍して 0.96em っぽくしとく
   show raw.where(block: false): set text(size: 1.2em)
-  show raw.where(block: false): it => box(
-    outset: (x: 0.8pt, y: 3pt),
+  show raw.where(block: false): it => highlight(
+    extent: 0.8pt,
     radius: 1.5pt,
     fill: luma(90%),
     it,
@@ -279,6 +276,7 @@
     outset: (left: -4pt, y: 5pt),
     above: 1.2em,
     below: 1.5em,
+    width: 100%,
   )
 
   show math.equation.where(block: false): set math.frac(style: "horizontal")

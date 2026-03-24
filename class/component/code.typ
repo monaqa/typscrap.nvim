@@ -65,7 +65,7 @@
   }
 
   if cmds.len() > 0 {
-    if results.len == 0 {
+    if results.len() == 0 {
       raw(lang: "sh", block: true, cmds.join("\n"))
     } else {
       termlog[
