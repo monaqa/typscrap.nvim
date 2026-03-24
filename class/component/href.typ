@@ -6,7 +6,7 @@
   if match == none {
     return (domain: url)
   }
-  let (captures: captures) = match
+  let (captures: (domain, paths, query)) = match
   if paths == none {
     paths = ""
   }
@@ -111,7 +111,9 @@
   }
 }
 
-#let default_link_converters = ("github.com": github_link_converter)
+#let default_link_converters = (
+  "github.com": github_link_converter,
+)
 
 #let pretty_link(link_converters: (:), link_style: default_link_style, it) = {
   if type(it.dest) != str {
