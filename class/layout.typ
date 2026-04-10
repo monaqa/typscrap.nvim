@@ -16,6 +16,9 @@
   set text(font: "IBM Plex Sans JP", size: 10.5pt)
   set par(justify: true, leading: 0.85em)
 
+  // "？」" などのカーニングがおかしくなる問題の対処
+  show regex("[！？]"): box.with(width: 1em)
+
   // inline elements
   show emph: set text(font: "IBM Plex Sans JP Medm")
 
@@ -226,16 +229,16 @@
         colors.bg.w0
       }
     },
-    stroke: colors.bg.w2 + 0.5pt,
+    // stroke: colors.bg.w3 + 0.8pt,
     // Tips: https://github.com/typst/typst/discussions/3692
-    // stroke: (x, y) => (
-    //   left: if x == 0 {1pt} else {0pt},
-    //   top: if y == 0 {1pt} else {0pt},
-    //   right: 1pt,
-    //   bottom: 1pt,
-    // )
+    stroke: (x, y) => (
+      left: if x == 0 {0pt} else {colors.bg.w4 + 1.0pt},
+      // top: if y == 0 {1pt} else {0pt},
+      // right: 1pt,
+      // bottom: 1pt,
+    )
   )
-  show table: block.with(clip: true, radius: 2pt, stroke: 1pt + colors.fg.w4)
+  show table: block.with(clip: true, radius: 2pt, stroke: 1.2pt + colors.fg.w4)
 
   // page
   set page(
