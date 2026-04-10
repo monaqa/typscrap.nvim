@@ -146,7 +146,8 @@
 
 #let termtable(
   header: none,
-  body
+  body,
+  ..args
 ) = {
   let items = body.at("children", default: ()).filter(c => c.func() == terms.item).map(item => item.fields())
 
@@ -159,7 +160,8 @@
       for (term, description) in items {
         tr[#term][#description]
       }
-    }
+    },
+    ..args
   )
 }
 

@@ -2,7 +2,7 @@
 #import "../util.typ": to-string
 
 #let parse_url(url) = {
-  let match = url.match(regex("http[s]?://([^/]+)([^?]+)?(\\?.*)?"))
+  let match = url.match(regex("http[s]?://([^/]+)([^?]+)?([#?].*)?"))
   if match == none {
     return (domain: url)
   }
