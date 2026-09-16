@@ -4,6 +4,14 @@
 // code 記述における便利関数
 
 #let normal_raw_block(body) = {
+  set text(
+    font: (
+      "CommitMono-height105",
+      "Hack Nerd Font",
+      "IBM Plex Sans JP",
+    ),
+  )
+  set par(leading: 0.6em, justify: false)
   breakable-fancyblock(
     fill: colors.bg.w0,
     border-width: 0.5pt,
@@ -17,6 +25,15 @@
 }
 
 #let console_block(body, ..args) = {
+  set text(
+    font: (
+      "CommitMono-height105",
+      "Hack Nerd Font",
+      "IBM Plex Sans JP",
+    ),
+  )
+  set par(leading: 0.6em, justify: false)
+
   block(
     width: 100%,
     stroke: (left: 3pt + colors.fg.w0),

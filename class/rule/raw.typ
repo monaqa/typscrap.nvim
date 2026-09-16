@@ -1,6 +1,8 @@
 #import "create.typ": create-rule
 #import "../component/code.typ": console_block, normal_raw_block
 
+#import "@preview/merman:0.3.0": mermaid
+
 #let raw-inline = create-rule("raw-inline", default: it => {
   set text(
     font: (
@@ -74,4 +76,20 @@
       ]
     }
   }
+}
+
+#let setup-raw-block() = {
+  (rule.raw-block.apply)(it => {
+    if it.lang == "mermaid" {
+      return mermaid(it.text, typography: (font: ("IBM Plex Sans JP",)))
+    }
+
+    if it.lang == "sh" {
+      code.console_block(it)
+    } else if it.lang == "ish" {
+      rule.interactive_block(it)
+    } else {
+      code.normal_raw_block(it)
+    }
+  })
 }

@@ -3,9 +3,6 @@
 #import "_internal/state.typ"
 #import "component/metadata.typ": scrap
 #import "component/todo.typ": checkbox
-#import "component/code.typ"
-
-#import "@preview/merman:0.3.0": mermaid
 
 #let document(
   show_toc: false,
@@ -22,6 +19,7 @@
   // inline elements
   show emph: set text(font: "IBM Plex Sans JP Medm")
   show link: rule.link.show
+  show hide: rule.hide.show
 
   // heading
   show title: rule.title.show
@@ -93,22 +91,8 @@
   }
 
   show raw.where(block: false): rule.raw-inline.show
-  show raw.where(block: true): set par(leading: 0.6em, justify: false)
   show raw.where(block: true): rule.raw-block.show
-
-  (rule.raw-block.apply)(it => {
-    if it.lang == "mermaid" {
-      return mermaid(it.text, typography: (font: ("IBM Plex Sans JP",)))
-    }
-
-    if it.lang == "sh" {
-      code.console_block(it)
-    } else if it.lang == "ish" {
-      rule.interactive_block(it)
-    } else {
-      code.normal_raw_block(it)
-    }
-  })
+  rule.setup-raw-block()
 
   // table
   set table(

@@ -16,14 +16,14 @@
       cb(it)
     },
 
-    clear: () => s.update(cb => (it => it)),
+    clear: s.update(cb => (it => it)),
     without: updater.with(new-cb: it => it),
 
     apply: new-cb => s.update(cb => new-cb),
     apply-within: (new-cb, body) => updater(new-cb: new-cb, body),
 
     append: other-cb => s.update(cb => (it => other-cb(cb(it)))),
-    append-within: other-cb => {
+    append-within: (other-cb, body) => context {
     let current = s.get()
     s.update(cb => (it => other-cb(current(it))))
     body
@@ -31,7 +31,7 @@
     },
 
     prepend: other-cb => s.update(cb => (it => cb(other-cb(it)))),
-    prepend-within: other-cb => {
+    prepend-within: (other-cb, body) => context {
     let current = s.get()
     s.update(cb => (it => current(other-cb(it))))
     body

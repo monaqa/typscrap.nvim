@@ -62,7 +62,7 @@ local template = {
     index_file = function(slug, title)
         return {
             [[//! target: ./preview.typ]],
-            [[#import "@local/class-typscrap:0.2.0": component; #import component: *]],
+            [[#import "@local/class-typscrap:0.3.0": component; #import component: *]],
             ([[#meta(slug: "%s")]]):format(slug),
             [[]],
             ([=[#title[%s]]=]):format(title),
@@ -70,9 +70,9 @@ local template = {
     end,
     preview_file = function(slug)
         return {
-            [[#import "@local/class-typscrap:0.2.0": layout]],
+            [[#import "@local/class-typscrap:0.3.0": document]],
             [[]],
-            [[#show: layout.document]],
+            [[#show: document]],
             [[]],
             [[#include "index.typ"]],
         }
