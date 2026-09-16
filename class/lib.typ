@@ -1,5 +1,3 @@
-#import "layout.typ"
-#import "states.typ"
+//!{"auto": true, "target": "../examples/preview.typ", "root": "../"}
+#import "document.typ": document
 #import "component.typ"
-#import "colors.typ"
-#import "html.typ"

@@ -38,13 +38,14 @@
         block(
           width: 100%,
           height: deco-height,
-          fill: if fill == none {none} else {gradient.linear(transparent, fill, angle: 90deg)},
+          fill: if fill == none { none } else { gradient.linear(transparent, fill, angle: 90deg) },
           stroke: (
-            x: border-width + gradient.linear(
-              transparent,
-              border-color,
-              angle: 90deg,
-            ),
+            x: border-width
+              + gradient.linear(
+                transparent,
+                border-color,
+                angle: 90deg,
+              ),
           ),
         )
       }
@@ -63,27 +64,34 @@
         block(
           width: 100%,
           height: deco-height,
-          fill: if fill == none {none} else {gradient.linear(transparent, fill, angle: 90deg)},
+          fill: if fill == none { none } else { gradient.linear(transparent, fill, angle: 90deg) },
           stroke: (
-            x: border-width + gradient.linear(
-              transparent,
-              border-color,
-              angle: 270deg,
-            ),
+            x: border-width
+              + gradient.linear(
+                transparent,
+                border-color,
+                angle: 270deg,
+              ),
           ),
         )
       }
     }
     grid(
       row-gutter: inset-y - deco-height - inner_inset_y,
-      grid.header(border-above, repeat: true),
+      grid.header(
+        border-above,
+        repeat: true,
+      ),
       grid.cell(
         inset: (x: inset-x, y: inner_inset_y),
         stroke: (x: border-color + border-width),
         fill: fill,
         body,
       ),
-      grid.footer(border-below, repeat: true),
+      grid.footer(
+        border-below,
+        repeat: true,
+      ),
     )
   }
 }
@@ -114,33 +122,33 @@
   let body-size = measure(body)
 
   let _left_tip = if label != none {
-    let (height, ) = measure(label)
+    let (height,) = measure(label)
     box(
       stroke: (right: none, rest: stroke),
       radius: (left: radius),
-      outset: (bottom: - bottom-edge, top: top-edge - height, right: 0.1pt), // わずかに重ねる
+      outset: (bottom: -bottom-edge, top: top-edge - height, right: 0.1pt), // わずかに重ねる
       inset: (x: inset-x),
       fill: stroke.paint,
       baseline: 0pt,
-      label
+      label,
     )
     // highlight の inset の代わり
     box(
       stroke: (y: stroke),
-      outset: (bottom: - bottom-edge, top: top-edge),
+      outset: (bottom: -bottom-edge, top: top-edge),
       fill: fill,
       baseline: 0pt,
-      [#box(height: 0pt, width: inset-x)]
+      [#box(height: 0pt, width: inset-x)],
     )
   } else {
     box(
       stroke: (right: none, rest: stroke),
       radius: (left: radius),
-      outset: (bottom: - bottom-edge, top: top-edge, right: 0.1pt), // わずかに重ねる
+      outset: (bottom: -bottom-edge, top: top-edge, right: 0.1pt), // わずかに重ねる
       inset: (left: inset-x),
       fill: fill,
       baseline: 0pt,
-      []
+      [],
     )
   }
 
@@ -155,7 +163,7 @@
   let _right = box(
     stroke: (left: none, rest: stroke),
     radius: (right: radius),
-    outset: (bottom: - bottom-edge, top: top-edge, left: 0.1pt), // わずかに重ねる
+    outset: (bottom: -bottom-edge, top: top-edge, left: 0.1pt), // わずかに重ねる
     width: inset-x,
     fill: fill,
     baseline: 0pt,

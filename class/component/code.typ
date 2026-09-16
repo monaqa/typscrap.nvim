@@ -1,4 +1,4 @@
-#import "../colors.typ"
+#import "../theme/colors.typ"
 #import "block.typ": breakable-fancyblock
 
 // code 記述における便利関数
@@ -12,69 +12,20 @@
     inset-y: 6pt,
     deco-height: 4pt,
     radius: 2pt,
-    body
+    body,
   )
 }
 
-#let console_block(body) = {
+#let console_block(body, ..args) = {
   block(
     width: 100%,
     stroke: (left: 3pt + colors.fg.w0),
     fill: colors.bg.w2,
     inset: (x: 4pt, top: 6pt, bottom: 6pt),
     radius: 2pt,
-    body
+    ..args,
+    body,
   )
-}
-
-#let termlog(input, output) = {
-  grid(rows: 2, input, block(
-    stroke: (left: 3pt + luma(30%)),
-    inset: (left: 4pt, top: 4pt),
-    output
-  ))
-}
-
-#let interactive_block(body) = {
-  let state = "cmd"
-  let cmds = ()
-  let results = ()
-  for line in body.text.split("\n") {
-    if state == "cmd" {
-      if line.starts-with("❯ ") {
-        cmds.push(line.slice(4))
-      } else {
-        state = "out"
-        results.push(line)
-      }
-    } else if state == "out" {
-      if line.starts-with("❯ ") {
-        termlog[
-          #raw(lang: "sh", block: true, cmds.join("\n"))
-        ][
-          #raw(block: true, results.join("\n"))
-        ]
-        cmds = ()
-        results = ()
-        cmds.push(line.slice(4))
-        state = "cmd"
-      } else {
-        results.push(line)
-      }
-    }
-  }
-
-  if cmds.len() > 0 {
-    if results.len() == 0 {
-      raw(lang: "sh", block: true, cmds.join("\n"))
-    } else {
-      termlog[
-        #raw(lang: "sh", block: true, cmds.join("\n"))
-      ][
-        #raw(block: true, results.join("\n"))
-      ]
-    }
-  }
 }
 
 #let filecode(fname, href: none, body) = {

@@ -1,5 +1,5 @@
 #import "block.typ": labeled-text
-#import "../util.typ": to-string
+#import "../_internal/content.typ": to-string
 
 #let parse_url(url) = {
   let match = url.match(regex("http[s]?://([^/]+)([^?]+)?([#?].*)?"))
@@ -87,10 +87,10 @@
           font: "CommitMono-height105",
           size: 0.9em,
         )[#if repo_info_body != none {
-            repo_info_body
-          } else {
-            it.body
-          }],
+          repo_info_body
+        } else {
+          it.body
+        }],
       ),
     )
   } else {
@@ -122,10 +122,14 @@
 
   // 再帰による無限ループを防ぐための措置。
   let _link_processed_flag = metadata((_internal_link_processed: true))
-  let _metadata = it.body.at("children", default: ()).at(0, default: (:)).at(
-    "value",
-    default: (:),
-  )
+  let _metadata = it
+    .body
+    .at("children", default: ())
+    .at(0, default: (:))
+    .at(
+      "value",
+      default: (:),
+    )
   let processed = _metadata.at("_internal_link_processed", default: false)
   if processed {
     return it
@@ -150,3 +154,4 @@
     text(fill: red.darken(40%), [[#it]])
   }
 })
+
