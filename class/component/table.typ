@@ -1,3 +1,5 @@
+#import "../theme/colors.typ"
+
 #let th(..args) = {
   arguments(
     table.header(

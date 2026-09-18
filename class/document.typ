@@ -2,7 +2,6 @@
 #import "theme/colors.typ"
 #import "_internal/state.typ"
 #import "component/metadata.typ": scrap
-#import "component/todo.typ": checkbox
 
 #let document(
   show_toc: false,
@@ -35,64 +34,14 @@
   // list & enum & term
   set list(
     indent: 0.8em,
-    // marker: place(center, dy: 0.25em)[#circle(radius: 1.5pt, fill: black)],
-    marker: depth => (
-      context {
-        let default = place(center, dy: 0.25em)[#circle(radius: 1.5pt, fill: black)]
-        let v = state.todo.get()
-        if v == none {
-          return default
-        }
-        let status = v.at("status")
-        let due = v.at("due")
-        if status == none {
-          default
-        } else if status == "done" {
-          checkbox(done: true)
-        } else {
-          checkbox(done: false)
-        }
-      }
-    ),
+    marker: place(center, dy: 0.25em)[#circle(radius: 1.5pt, fill: black)],
   )
 
-  show list.item: it => {
-    let children = it.body.at("children", default: ())
-    let md = children
-      .filter(c => c.func() == metadata)
-      .fold(
-        (status: none, due: none),
-        (acc, data) => {
-          let v = data.value
-          if "status" in v {
-            acc.status = v.status
-          }
-          if "due" in v {
-            acc.due = v.due
-          }
-          acc
-        },
-      )
-    state.todo.update(md)
-    v(0pt) // 複数の update がくっつくと意図しない挙動を引き起こすため、あえてつける
-    if md.due != none {
-      place(
-        right,
-        box(
-          fill: colors.fg.r0,
-          inset: 3pt,
-          radius: 2pt,
-          text(fill: colors.bg.w0, size: 0.8em, weight: 600, [Due: #md.due]),
-        ),
-      )
-    }
-    it
-    state.todo.update(none)
-  }
-
-  show raw.where(block: false): rule.raw-inline.show
-  show raw.where(block: true): rule.raw-block.show
-  rule.setup-raw-block()
+  show raw.where(block: false): rule.raw.inline.show
+  show raw.where(block: true): rule.raw.block.show
+  show raw.where(block: true, lang: "ish"): rule.raw.interactive-shell.show
+  show raw.where(block: true, lang: "mermaid"): rule.raw.mermaid.show
+  show raw.where(block: true, lang: "sh"): rule.raw.shell.show
 
   // table
   set table(
