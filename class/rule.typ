@@ -1,4 +1,6 @@
 #import "rule/create.typ": create-rule
+#import "rule/apply.typ"
+
 #import "rule/heading.typ": h1, h2, h3, h4, h5, h6, title
 #import "rule/hide.typ": hide
 #import "rule/link.typ": link

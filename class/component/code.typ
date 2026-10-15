@@ -3,15 +3,18 @@
 
 // code 記述における便利関数
 
-#let normal_raw_block(body) = {
-  set text(
-    font: (
-      "CommitMono-height105",
-      "Hack Nerd Font",
-      "IBM Plex Sans JP",
-    ),
-  )
-  set par(leading: 0.6em, justify: false)
+#let normal_raw_block(
+  body,
+  font: (
+    "CommitMono-height105",
+    "Hack Nerd Font",
+    "IBM Plex Sans JP",
+  ),
+  par-args: arguments(leading: 0.6em, justify: false),
+  ..args,
+) = {
+  set text(font: font)
+  set par(..par-args)
   breakable-fancyblock(
     fill: colors.bg.w0,
     border-width: 0.5pt,
@@ -20,6 +23,7 @@
     inset-y: 6pt,
     deco-height: 4pt,
     radius: 2pt,
+    ..args,
     body,
   )
 }
