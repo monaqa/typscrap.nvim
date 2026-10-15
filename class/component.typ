@@ -2,6 +2,7 @@
 #import "component/metadata.typ": *
 #import "component/table.typ": *
 #import "component/todo.typ": *
+#import "component/pi.typ": *
 
 #import "component/chatbot.typ"
 #import "component/code.typ"
